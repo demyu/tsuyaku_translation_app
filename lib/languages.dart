@@ -9,7 +9,6 @@ class Languages {
     "fi":"Finnish",
     "fr":"French",
     "de":"German",
-    "he":"Hebrew",
     "id":"Indonesian",
     "it":"Italian",
     "ja":"Japanese",

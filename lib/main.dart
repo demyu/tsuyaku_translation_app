@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:translate/languages.dart';
 import 'package:translate/translateapi.dart';
@@ -49,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void translateButtonAction() async{
-    String from = lang.getAbr(dropDownValue1) ;
+    String from = lang.getAbr(dropDownValue1);
     String to = lang.getAbr(dropDownValue2);
     String inp = textController1.text;
 
@@ -59,12 +61,32 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         resultController.text = q['outputs'][0]["output"];
       });
-    }on Exception catch(_){
+    }on Exception catch(e){
+      snacks(e);
       setState(() {
         resultController.text = textController1.text;
       });
     }
     
+  }
+
+  void snacks(e) async{
+    String from = lang.getAbr(dropDownValue1);
+    String to = lang.getAbr(dropDownValue2);
+
+    try {
+      final result = await InternetAddress.lookup('example.com');
+    } on SocketException catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Not connected to the internet")));
+    }
+
+    if (textController1.text == ""){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Input cannot be empty")));
+    }else if(from==to){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("From and To are in the same language")));  
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("API Error. You might have reach maximum request per second")));
+    }
   }
 
   @override
